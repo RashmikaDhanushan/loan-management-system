@@ -1,75 +1,147 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import LottieView from 'lottie-react-native';
+import { useState } from 'react';
+import { Alert, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native';
+export default function RegisterScreen() {
+  const [name, setName] = useState('');
+  const [nic, setNic] = useState('');
+  const [contact, setContact] = useState('');
+  const [address, setAddress] = useState('');
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+  const handleSubmit = () => {
+    if (!name || !nic || !contact || !address) {
+      Alert.alert('Validation', 'Please fill all fields');
+      return;
+    }
 
-export default function HomeScreen() {
+    Alert.alert('Success', `Customer Registered:\n\nName: ${name}\nNIC: ${nic}`);
+    setName('');
+    setNic('');
+    setContact('');
+    setAddress('');
+  };
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.title}>Customer Registration</Text>
+
+      <LottieView
+        source={require('@/assets/dashboard.json')}
+        autoPlay
+        loop
+        style={styles.gif}
+      />
+
+      <TextInput placeholder="Full Name" value={name} onChangeText={setName} style={styles.input} />
+      <TextInput placeholder="NIC Number" value={nic} onChangeText={setNic} style={styles.input} />
+      <TextInput
+        placeholder="Contact Number"
+        value={contact}
+        onChangeText={setContact}
+        style={styles.input}
+        keyboardType="phone-pad"
+      />
+      <TextInput
+        placeholder="Address"
+        value={address}
+        onChangeText={setAddress}
+        style={[styles.input, { height: 80 }]}
+        multiline
+      />
+
+      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+        <Text style={styles.buttonText}>Submit</Text>
+      </TouchableOpacity>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
+  container: {
+    padding: 20,
+    backgroundColor: 'rgb(1, 1, 26)',
+    flexGrow: 1,
+    justifyContent: 'center',
+  },
+  title: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    textAlign: 'center',
+    color: '#fff',
+    textShadowColor: '#000',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 1,
+    letterSpacing: 1,
+    textTransform: 'uppercase',
+    fontFamily: 'Arial',
+    marginTop: 10,
+    padding: 10,
+    backgroundColor: 'rgb(71, 4, 148)',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    elevation: 2,
+    shadowColor: '#000',
+  },
+  input: {
+    backgroundColor: '#fff',
+    borderColor: '#ddd',
+    borderWidth: 1,
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 15,
+    fontSize: 16,
+    elevation: 1,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+  },
+  button: {
+    backgroundColor: 'rgb(55, 27, 87)',
+    padding: 15,
+    borderRadius: 8,
     alignItems: 'center',
-    gap: 8,
+    marginTop: 8,
+    elevation: 2,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  buttonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+    textAlign: 'center',
+    textShadowColor: '#000',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 1,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  gif: {
+    width: 350,
+    height: 250,
+    marginBottom: 5,
+    alignSelf: 'center',
+    // borderRadius: 10,
+    // borderColor: '#000',
+    // borderWidth: 1,
+    overflow: 'hidden',
+    // backgroundColor: '#F9F9F9',
+    elevation: 2,
+    // shadowColor: '#000',
+    // shadowOffset: { width: 0, height: 2 },
+    // shadowOpacity: 0.25,
+    // shadowRadius: 3.84,
+    alignItems: 'center',
+    justifyContent: 'center',
+    resizeMode: 'cover',
+    aspectRatio: 1, // Maintain aspect ratio
+    maxWidth: '100%', // Ensure it doesn't overflow the screen
+    maxHeight: 300, // Limit height to prevent overflow
+    minHeight: 200, // Ensure it has a minimum height
+    minWidth: 200, // Ensure it has a minimum width
+    flexShrink: 1, // Allow it to shrink if needed
+    flexGrow: 0, // Prevent it from growing beyond its content size
+    flexDirection: 'row', // Ensure content is centered
+
   },
 });
